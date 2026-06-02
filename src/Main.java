@@ -1,24 +1,42 @@
+import br.com.alura.screenmatch.calculos.CalculadoraDeTempo;
+import br.com.alura.screenmatch.calculos.FiltroRecomendacao;
+import br.com.alura.screenmatch.models.Episodio;
+import br.com.alura.screenmatch.models.Filme;
+import br.com.alura.screenmatch.models.Serie;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Esse é o Screen Match");
-        System.out.println("Filme: Top Gun: Maverick");
+        Filme filme1 = new Filme("O poderoso chefão", 1970, 180);
+        filme1.exibeFichaTecnica();
 
-        int anoDeLancamento = 2022;
-        System.out.println("Ano de lançamento: " + anoDeLancamento);
-        boolean incluidoNoPlano = true;
-        double notaDoFilme = 8.1;
-        double media = (9.8 + 6.3 + 8.0) /3;
-        System.out.println(media);
-        String sinopse;
-        sinopse = """
-                Filme Top Gun
-                Filme de aventura com galã dos anos 80
-                Muito bom!
-                Ano de lançamento
-                """ + anoDeLancamento;
-        System.out.println(sinopse);
+        filme1.avalia(8);
+        filme1.avalia(5);
+        filme1.avalia(10);
+        System.out.println("Total de avaliações: " + filme1.getTotalDeAvaliacoes());
+        System.out.println(filme1.pegaMedia());
 
-        int classificacao = (int) (media /2);
-        System.out.println(classificacao);
+        Serie serie1 = new Serie("Lost", 2000);
+        serie1.exibeFichaTecnica();
+        serie1.setTemporadas(10);
+        serie1.setEpisodiosPorTemporada(10);
+        serie1.setMinutosPorEpisodio(50);
+        System.out.println("Duração para maratonar Lost: " + serie1.getDuracaoEmMinutos());
+
+        Filme filme2 = new Filme("Avatar", 2023, 200);
+
+        CalculadoraDeTempo calculadora = new CalculadoraDeTempo();
+        calculadora.inclui(filme1);
+        calculadora.inclui(filme2);
+        calculadora.inclui(serie1);
+        System.out.println(calculadora.getTempoTotal());
+
+        FiltroRecomendacao filtro = new FiltroRecomendacao();
+        filtro.filtra(filme1);
+
+        Episodio episodio1 = new Episodio();
+        episodio1.setNumero(1);
+        episodio1.setSerie(serie1);
+        episodio1.setTotalVisualizacoes(300);
+        filtro.filtra(episodio1);
     }
 }
