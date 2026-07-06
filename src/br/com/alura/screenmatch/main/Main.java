@@ -1,11 +1,15 @@
+package br.com.alura.screenmatch.main;
+
 import br.com.alura.screenmatch.calculos.CalculadoraDeTempo;
 import br.com.alura.screenmatch.calculos.FiltroRecomendacao;
 import br.com.alura.screenmatch.models.Episodio;
 import br.com.alura.screenmatch.models.Filme;
 import br.com.alura.screenmatch.models.Serie;
 
+import java.util.ArrayList;
+
 public class Main {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         Filme filme1 = new Filme("O poderoso chefão", 1970, 180);
         filme1.exibeFichaTecnica();
 
@@ -38,5 +42,17 @@ public class Main {
         episodio1.setSerie(serie1);
         episodio1.setTotalVisualizacoes(300);
         filtro.filtra(episodio1);
+
+        var filme3 = new Filme("Dogville", 2003, 200);
+        filme3.avalia(10);
+
+        ArrayList<Filme> listaDeFilmes = new ArrayList<>();
+        listaDeFilmes.add(filme1);
+        listaDeFilmes.add(filme2);
+        listaDeFilmes.add(filme3);
+        System.out.println("Tamanho da lista " + listaDeFilmes.size());
+        System.out.println("Primeiro filme " + listaDeFilmes.get(0).getNome());
+        System.out.println(listaDeFilmes);
+        System.out.println("toString do filme " + listaDeFilmes.get(0).toString());
     }
 }
