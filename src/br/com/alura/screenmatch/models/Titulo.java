@@ -79,4 +79,11 @@ public class Titulo implements Comparable<Titulo> {
     public int compareTo(Titulo outroTitulo) {
         return this.getNome().compareTo(outroTitulo.getNome());
     }
+
+    @Override
+    public String toString() {
+        return "Titulo \n\nNome: " + this.nome +
+                "\nAno de lançamento: " + this.anoDeLancamento +
+                "\nDuração em minutos: " + this.duracaoEmMinutos;
+    }
 }
