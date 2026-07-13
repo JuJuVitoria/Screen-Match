@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.main;
 
+import br.com.alura.screenmatch.excecao.ErroDeConversaoDeAnoException;
 import br.com.alura.screenmatch.models.Titulo;
 import br.com.alura.screenmatch.models.TituloOmdb;
 import com.google.gson.FieldNamingPolicy;
@@ -21,27 +22,40 @@ public class PrincipalComBusca {
 
         System.out.println("Escreva sua key da api do OMDb: ");
         var apiKey = scanner.nextLine();
-        String address = "http://omdbapi.com/?t=" + search + "&apikey=" + apiKey;
-        HttpClient client = HttpClient.newHttpClient();
+        String address = "http://omdbapi.com/?t=" + search.replace(" ", "+") + "&apikey=" + apiKey;
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(address))
-                .build();
+        try {
+            HttpClient client = HttpClient.newHttpClient();
 
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(address))
+                    .build();
 
-        String json = response.body();
-        System.out.println(json);
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-        TituloOmdb tituloOmdb = gson.fromJson(json, TituloOmdb.class);
-        System.out.println(tituloOmdb);
-        Titulo titulo = new Titulo(tituloOmdb);
-        System.out.println(titulo.getNome());
-        System.out.println(titulo.getAnoDeLancamento());
-        System.out.println(titulo.getDuracaoEmMinutos());
+            String json = response.body();
+            System.out.println(json);
+
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
+            TituloOmdb tituloOmdb = gson.fromJson(json, TituloOmdb.class);
+            System.out.println(tituloOmdb);
+
+            Titulo titulo = new Titulo(tituloOmdb);
+            System.out.println(titulo.getNome());
+            System.out.println(titulo.getAnoDeLancamento());
+            System.out.println(titulo.getDuracaoEmMinutos());
+        } catch (NumberFormatException e) {
+            System.out.println("Aconteceu um erro: ");
+            System.out.println(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Algum erro de argumento na busca, verifique o endereço.");
+        } catch (ErroDeConversaoDeAnoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("O programa finanlizou corretamente!");
     }
 }
